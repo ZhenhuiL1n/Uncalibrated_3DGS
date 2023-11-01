@@ -1,0 +1,9 @@
+[submodule "submodules/submodules/simple-knn"]
+	path = submodules/submodules/simple-knn
+	url = git@github.com:camenduru/simple-knn.git
+[submodule "submodules/simple-knn"]
+	path = submodules/simple-knn
+	url = git@github.com:camenduru/simple-knn.git
+[submodule "submodules/depth-diff-gaussian-rasterization"]
+	path = submodules/depth-diff-gaussian-rasterization
+	url = git@github.com:camenduru/simple-knn.git
