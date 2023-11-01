@@ -98,17 +98,20 @@ def training(dataset, opt, pipe, dataloader, testing_iterations, saving_iteratio
         # apply the tv l2 loss regularization here:
         # Pick a random Camera
     
-        unseen_view = render(unseenviewpoint_cam, gaussians, pipe, background)
-        depth, unseen_viewspace_point_tensor, unseen_visibility_filter, unseen_radii = unseen_view["depth"], unseen_view["viewspace_points"], unseen_view["visibility_filter"], unseen_view["radii"]
-        # get the depth map from the unseen view
-        loss_tv, _ = loss_tv_norm(depth, patch_size=32, alpha=0.1, beta=0.9)
+        loss_tv = Ll1.clone() # copy Ll1 here to avoid the error in the training report
+        
+        
+        # unseen_view = render(unseenviewpoint_cam, gaussians, pipe, background)
+        # depth, unseen_viewspace_point_tensor, unseen_visibility_filter, unseen_radii = unseen_view["depth"], unseen_view["viewspace_points"], unseen_view["visibility_filter"], unseen_view["radii"]
+        # # get the depth map from the unseen view
+        # loss_tv, _ = loss_tv_norm(depth, patch_size=32, alpha=0.1, beta=0.9)
         
         # how much weight we should add to the main loss
         # maybe change the methodology here, try to mute the tv loss after some iterations
         
         loss = (1.0 - opt.lambda_dssim - opt.lambda_tv) * Ll1 + \
-                opt.lambda_dssim * (1.0 - ssim(image, gt_image)) + \
-                opt.lambda_tv * loss_tv
+                opt.lambda_dssim * (1.0 - ssim(image, gt_image)) \
+                # + opt.lambda_tv * loss_tv
                 
                 
         loss.backward()
